@@ -1,0 +1,4 @@
+{
+  "typescript.autoImportSuggestions.enabled": false,
+  "editor.acceptSuggestionOnCommitCharacter": false
+}
