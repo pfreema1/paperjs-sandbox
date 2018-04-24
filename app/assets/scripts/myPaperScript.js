@@ -52,8 +52,6 @@ var leftLineLayer = new Layer();
   }
 })();
 
-console.log(leftLineLayer);
-
 // var leftLineGroup = new Group([leftLine]);
 // leftLineGroup.transformContent = false;
 // leftLineGroup.rotate(30);
@@ -139,4 +137,46 @@ var rightLineLayer = new Layer();
 
   topMask.fillColor = MASK_COLOR;
   topMaskGroup.rotate(-30, topMask.bounds.bottomLeft);
+})();
+
+/*****************************
+ **		show intersections
+ ******************************/
+(function showIntersections() {
+  var topMask = project.activeLayer.lastChild.children;
+  var intersections = [];
+  var intersectionLine = new Path({
+    strokeColor: 'green'
+  });
+
+  console.log(topMask);
+  intersectionLine.add(
+    new Point(topMask[0].bounds.bottomLeft.x, topMask[0].bounds.bottomLeft.y),
+    new Point(topMask[0].bounds.bottomRight.x, topMask[0].bounds.bottomRight.y)
+  );
+  intersectionLine.rotate(-30, intersectionLine.bounds.bottomLeft);
+
+  // create array of rightLines
+  for (var i = 0; i < project.activeLayer.children.length; i++) {
+    if (
+      project.activeLayer.children[i].children === undefined &&
+      project.activeLayer.children[i].getIntersections(intersectionLine)
+        .length > 0
+    ) {
+      intersections.push(
+        project.activeLayer.children[i].getIntersections(intersectionLine)
+      );
+      // console.log(intersections);
+    }
+  }
+
+  console.log(intersections);
+
+  for (var i = 0; i < intersections.length; i++) {
+    new Path.Circle({
+      center: intersections[i][0].point,
+      radius: 5,
+      fillColor: 'yellow'
+    });
+  }
 })();
