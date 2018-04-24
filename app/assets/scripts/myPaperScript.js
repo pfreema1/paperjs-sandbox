@@ -23,6 +23,8 @@ var NUM_LINES = 50;
 var END_LEFT_LINE = view.size.width * 0.32;
 var END_RIGHT_LINE = view.size.width * 0.75;
 var MASK_COLOR = 'blue';
+var TOP_FRONT_CENTER_MAX_HEIGHT = view.size.height * 0.5;
+var LINE_SPEED = 5;
 
 /*****************************
  **		leftLine
@@ -123,9 +125,18 @@ var rightLineLayer = new Layer();
 /*****************************
  **		top mask
  ******************************/
-var topMaskLayer = new Layer();
-// (function createTopMask() {
-//   var topMask = new Rectangle(
-//     new Point()
-//   );
-// })();
+// var topMaskLayer = new Layer();
+(function createTopMask() {
+  var topRectangle = new Rectangle(
+    new Point(view.center.x, view.size.height * 0.1),
+    new Point(view.size.width, TOP_FRONT_CENTER_MAX_HEIGHT)
+  );
+  var topMask = new Path.Rectangle(topRectangle);
+  var topMaskGroup = new Group({
+    applyMatrix: false,
+    children: [topMask]
+  });
+
+  topMask.fillColor = MASK_COLOR;
+  topMaskGroup.rotate(-30, topMask.bounds.bottomLeft);
+})();
